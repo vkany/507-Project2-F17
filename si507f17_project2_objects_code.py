@@ -83,7 +83,7 @@ class Media(object):
     def __init__(self, test_diction):
         self.title  = test_diction['trackName']
         self.author = test_diction[ 'artistName']
-        self.itunes_URL = test_diction['artistViewUrl']
+        self.itunes_URL = test_diction['trackViewUrl']
         self.itunes_id = test_diction['trackId']
 
     def __str__(self):
@@ -99,7 +99,7 @@ class Media(object):
         return string in self.title
 
 #
-# x = Media(teat)
+# x = Media(tea)
 # print(x)
 
 ## The Media class should accept one dictionary data structure representing a piece of media from iTunes as input to the constructor.
@@ -135,12 +135,57 @@ print("\n***** PROBLEM 2 *****\n")
 ## - album (the album title)
 ## - track_number (the number representing its track number on the album)
 ## - genre (the primary genre name from the data iTunes gives you)
+class Song(Media):
+
+    def __init__(self, test_diction):
+        Media.__init__(self,test_diction)
+        self.album = test_diction ['collectionName']
+        self. track_number = test_diction ['trackNumber']
+        self.genre = test_diction ['primaryGenreName']
+        self.mil_seconds = test_diction ['trackTimeMillis']
+
+    def __len__(self):
+        self.mil_seconds = int(self.mil_seconds)
+        self.seconds = self.mil_seconds/1000
+        self.seconds = int(self.seconds)
+        return self.seconds
+
 
 ## Should have the len method overridden to return the number of seconds in the song. (HINT: The data supplies number of milliseconds in the song... How can you access that data and convert it to seconds?)
 
-
+# Song()
 
 ### class Movie:
+class Movie(Media):
+
+    def __init__(self,test_diction):
+        Media.__init__(self,test_diction)
+        self.rating = test_diction['contentAdvisoryRating']
+        self.genre = test_diction['primaryGenreName']
+        self.itunes_URL = test_diction['trackViewUrl']
+        if test_diction['longDescription'] == '':
+            self.description = None
+        else:
+            self.description = test_diction['longDescription'].encode('utf-8')
+
+        try:
+            test_diction.get('trackTimeMillis')
+            self.mil_seconds = test_diction['trackTimeMillis']
+        except KeyError:
+            self.mil_seconds = 0
+
+    def __len__(self):
+        self.mil_seconds = int(self.mil_seconds)
+        self.minutes = self.mil_seconds/(1000*60)
+        self.minutes = int(self.minutes)
+        return self.minutes
+
+    def title_words_num(self):
+        return len(self.description)
+
+
+
+
 
 ## Should have the following additional instance variables:
 ## - rating (the content advisory rating, from the data)
@@ -180,10 +225,20 @@ for media_item in media_samples:
     instance = Media(media_item)
     media_list.append(instance)
 
-print(media_list)
 
-#
-# print(book_list)
+song_list = []
+
+for song_item in song_samples:
+    instance = Song(song_item)
+    song_list.append(instance)
+
+
+
+movie_list = []
+for movie_item in movie_samples:
+    instance = Movie(movie_item)
+    movie_list.append(instance)
+
 
 ## You should end up with: a list of Media objects saved in a variable media_list,
 ## a list of Song objects saved in a variable song_list,
