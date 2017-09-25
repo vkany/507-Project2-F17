@@ -247,12 +247,33 @@ for movie_item in movie_samples:
 
 ## You may use any method of accumulation to make that happen.
 
-
-
-
 ## [PROBLEM 4] [200 POINTS]
 print("\n***** PROBLEM 4 *****\n")
 
+movies = open("movies.csv","w")
+# output the header row
+movies.write("Title, Artist, ID ,URL, Length\n")
+# output each of the rows:
+for movie in movie_list :
+    movies.write('"{}", {}, {},{},{}\n'.format(movie.title,movie.author,movie.itunes_id,movie.itunes_URL,len(movie)))
+movies.close()
+
+
+songs = open("songs.csv","w")
+# output the header row
+songs.write("Title, Artist, ID ,URL, Length\n")
+# output each of the rows:
+for song in song_list :
+    songs.write('"{}", {}, {},{},{}\n'.format(song.title,song.author,song.itunes_id,song.itunes_URL,len(song)))
+songs.close()
+
+media = open("media.csv","w")
+# output the header row
+media.write ("Title, Artist, ID ,URL, Length\n")
+# output each of the rows:
+for media_file in media_list :
+    media.write('"{}", {}, {},{},{}\n'.format(media_file.title,media_file.author,media_file.itunes_id,media_file.itunes_URL,len(media_file)))
+media.close()
 ## Finally, write 3 CSV files:
 # - movies.csv
 # - songs.csv
